@@ -1,0 +1,49 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/handgun.gd" id="1"]
+[ext_resource type="PackedScene" path="res://models/weapons/handgun.glb" id="2"]
+[ext_resource type="Texture2D" path="res://textures/ui/icon_handgun.svg" id="3"]
+[ext_resource type="PackedScene" path="res://models/player/hand_grip.glb" id="4"]
+
+[node name="Handgun" type="Node3D"]
+script = ExtResource("1")
+icon = ExtResource("3")
+display_name = "HANDGUN"
+slot = 2
+kind = 0
+damage = 30.0
+headshot_multiplier = 2.0
+range_m = 80.0
+automatic = false
+rpm = 400.0
+magazine_size = 12
+reserve_ammo = 60
+infinite_reserve = false
+reload_time = 1.5
+fire_sound = "handgun_shot"
+spread_base_deg = 0.5
+spread_move_deg = 1.8
+spread_ads_deg = 0.08
+spread_max_deg = 6.0
+recoil_pitch_deg = 1.0
+recoil_yaw_deg = 0.35
+recoil_kick = 0.06
+can_ads = true
+ads_fov = 58.0
+ads_speed = 15.0
+can_fire_while_sprinting = false
+mount_position = Vector3(0.1, -0.01, -0.34)
+ads_position = Vector3(0, -0.01, -0.3)
+bob_amount = Vector2(0.012, 0.009)
+
+[node name="Model" parent="." instance=ExtResource("2")]
+transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+
+[node name="RightHand" parent="." instance=ExtResource("4")]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 0, -0.06, 0.1)
+
+[node name="Muzzle" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, -0.15)
+
+[node name="EjectPoint" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.03, 0.04, 0.0)

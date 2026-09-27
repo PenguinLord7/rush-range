@@ -1,0 +1,46 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/weapons/grenade.gd" id="1"]
+[ext_resource type="PackedScene" path="res://models/weapons/grenade.glb" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/weapons/grenade_projectile.tscn" id="3"]
+[ext_resource type="Texture2D" path="res://textures/ui/icon_grenade.svg" id="4"]
+[ext_resource type="PackedScene" path="res://models/player/hand_grip.glb" id="5"]
+
+[node name="Grenade" type="Node3D"]
+script = ExtResource("1")
+icon = ExtResource("4")
+display_name = "GRENADE"
+slot = 4
+kind = 2
+damage = 70.0
+range_m = 1.0
+automatic = false
+rpm = 60.0
+magazine_size = 3
+reserve_ammo = 0
+infinite_reserve = false
+reload_time = 0.0
+fire_sound = "grenade_throw"
+spread_base_deg = 0.0
+spread_move_deg = 0.0
+spread_ads_deg = 0.0
+spread_max_deg = 0.0
+recoil_pitch_deg = 0.0
+recoil_yaw_deg = 0.0
+recoil_kick = 0.0
+can_ads = false
+can_fire_while_sprinting = true
+mount_position = Vector3(0.12, -0.05, -0.3)
+bob_amount = Vector2(0.014, 0.011)
+min_throw_speed = 9.0
+max_throw_speed = 20.0
+max_charge_time = 0.9
+explosion_radius = 4.5
+regen_time = 6.0
+projectile_scene = ExtResource("3")
+
+[node name="Model" parent="." instance=ExtResource("2")]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 0, 0, 0)
+
+[node name="RightHand" parent="." instance=ExtResource("5")]
+transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 0, -0.05, 0.09)
