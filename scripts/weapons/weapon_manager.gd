@@ -35,6 +35,8 @@ func _spawn_weapons() -> void:
 func _process(_delta: float) -> void:
 	if player == null or weapons.is_empty():
 		return
+	if not InputState.gameplay_active():
+		return
 	var weapon := weapons[current_index]
 	weapon.set_sprinting(player.is_sprinting() or player.is_sliding())
 

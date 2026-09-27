@@ -27,6 +27,7 @@ var _ammo_label: Label
 var _reload_label: Label
 var _icon_rect: TextureRect
 var _notice_label: Label
+var _capture_label: Label
 
 func _ready() -> void:
 	set_anchors_preset(Control.PRESET_FULL_RECT)
@@ -69,6 +70,10 @@ func _process(delta: float) -> void:
 			_ads = holder.current_weapon().ads_amount()
 
 	_notice_label.text = "" if _notice_timer <= 0.0 else _notice_label.text
+	if _capture_label:
+		_capture_label.visible = OS.has_feature("web") \
+			and Input.mouse_mode != Input.MOUSE_MODE_CAPTURED \
+			and not get_tree().paused
 	queue_redraw()
 
 # --- Drawing ---------------------------------------------------------------
@@ -121,6 +126,19 @@ func _build() -> void:
 	_notice_label.offset_top = 90
 	_notice_label.offset_bottom = 130
 	add_child(_notice_label)
+
+	_capture_label = UiTheme.title_label("CLICK TO LOOK AROUND", 34)
+	_capture_label.add_theme_color_override("font_color", UiTheme.ACCENT)
+	_capture_label.anchor_left = 0.5
+	_capture_label.anchor_right = 0.5
+	_capture_label.anchor_top = 0.5
+	_capture_label.anchor_bottom = 0.5
+	_capture_label.offset_left = -300
+	_capture_label.offset_right = 300
+	_capture_label.offset_top = -30
+	_capture_label.offset_bottom = 30
+	_capture_label.visible = false
+	add_child(_capture_label)
 
 	var panel := UiTheme.panel(Color(0.08, 0.11, 0.18, 0.86))
 	panel.mouse_filter = Control.MOUSE_FILTER_IGNORE

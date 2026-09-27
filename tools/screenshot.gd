@@ -41,31 +41,31 @@ func _scene_shots() -> void:
 	await _settle(3)
 
 	manager.switch_to(1, true)
-	await _settle(6)
+	await _settle(22)
 	await _capture("game_handgun.png")
 	await _capture_zoom("zoom_handgun.png")
 
 	manager.switch_to(2, true)
-	await _settle(6)
+	await _settle(22)
 	await _capture("game_fist.png")
 	await _capture_zoom("zoom_fist.png")
 
 	manager.switch_to(3, true)
-	await _settle(6)
+	await _settle(22)
 	await _capture("game_grenade.png")
 	await _capture_zoom("zoom_grenade.png")
 
 	manager.switch_to(0, true)
-	await _settle(6)
+	await _settle(22)
 	await _capture_zoom("zoom_rifle.png")
 	Settings.fov = 80.0
 	await _settle(4)
 	player.rotation.y = deg_to_rad(-55.0)
-	await _settle(6)
+	await _settle(22)
 	await _capture("game_movement_area.png")
 
 	player.rotation.y = deg_to_rad(55.0)
-	await _settle(6)
+	await _settle(22)
 	await _capture("game_moving_targets.png")
 
 	player.rotation.y = 0.0

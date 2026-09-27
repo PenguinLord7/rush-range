@@ -16,7 +16,7 @@ func _initialize() -> void:
 		"move_right": [_key(KEY_D)],
 		"jump": [_key(KEY_SPACE)],
 		"sprint": [_key(KEY_SHIFT)],
-		"crouch": [_key(KEY_CTRL)],
+		"crouch": [_key(KEY_C)],
 		"fire": [_mouse(MOUSE_BUTTON_LEFT)],
 		"aim": [_mouse(MOUSE_BUTTON_RIGHT)],
 		"reload": [_key(KEY_R)],

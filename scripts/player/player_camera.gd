@@ -140,6 +140,10 @@ func add_shake(amount: float) -> void:
 func get_pitch() -> float:
 	return _pitch + _recoil_pitch
 
+## Total current recoil magnitude (used by tests).
+func recoil_amount() -> float:
+	return absf(_recoil_pitch) + absf(_recoil_yaw)
+
 ## World-space aim ray from the camera (used for hitscan).
 func aim_origin() -> Vector3:
 	return global_position

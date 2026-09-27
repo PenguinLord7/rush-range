@@ -32,7 +32,7 @@ enum State { WALK, SPRINT, CROUCH, SLIDE, AIR }
 @export_group("Acceleration")
 @export var ground_accel: float = 55.0
 @export var ground_friction: float = 45.0
-@export var air_accel: float = 12.0
+@export var air_accel: float = 45.0
 
 @export_group("Body")
 @export var stand_height: float = 1.8
@@ -55,6 +55,7 @@ var _current_height: float = 1.8
 var _current_eye: float = 1.62
 var _step_distance: float = 0.0
 var _air_jumps_used: int = 0
+var _input_active: bool = true
 var _was_on_floor: bool = true
 var _input_dir: Vector3 = Vector3.ZERO
 
@@ -70,6 +71,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	_slide_cd = maxf(_slide_cd - delta, 0.0)
+	_input_active = InputState.gameplay_active()
 	if is_on_floor():
 		_air_jumps_used = 0
 	_input_dir = _read_input_dir()
@@ -101,6 +103,8 @@ func _update_footsteps(delta: float, on_floor: bool) -> void:
 		AudioManager.play_sfx("footstep_%d" % (1 + randi() % 4), volume, randf_range(0.92, 1.08))
 
 func _read_input_dir() -> Vector3:
+	if not _input_active:
+		return Vector3.ZERO
 	var raw := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var dir := (transform.basis * Vector3(raw.x, 0.0, raw.y))
 	dir.y = 0.0
@@ -121,15 +125,15 @@ func _update_state(delta: float) -> void:
 		return
 
 	# Start a slide: must be moving fast and be grounded with crouch pressed.
-	var wants_slide := Input.is_action_just_pressed("crouch") \
+	var wants_slide := _input_active and Input.is_action_just_pressed("crouch") \
 		and _slide_cd <= 0.0 and current_speed > 5.5 and _input_dir != Vector3.ZERO
 	if wants_slide:
 		_start_slide()
 		return
 
-	if Input.is_action_pressed("crouch"):
+	if _input_active and Input.is_action_pressed("crouch"):
 		state = State.CROUCH
-	elif Input.is_action_pressed("sprint") and _input_dir != Vector3.ZERO:
+	elif _input_active and Input.is_action_pressed("sprint") and _input_dir != Vector3.ZERO:
 		state = State.SPRINT
 	else:
 		state = State.WALK
@@ -153,7 +157,7 @@ func _apply_movement(delta: float) -> void:
 			State.CROUCH:
 				target_speed = crouch_speed
 			State.AIR:
-				target_speed = clampf(current_speed, 0.0, sprint_speed)
+				target_speed = clampf(maxf(current_speed, walk_speed), 0.0, sprint_speed)
 		var desired := _input_dir * target_speed
 		var accel := ground_accel if is_on_floor() else air_accel
 		var horiz := Vector3(velocity.x, 0.0, velocity.z)
@@ -167,7 +171,7 @@ func _apply_movement(delta: float) -> void:
 	if not is_on_floor():
 		velocity.y -= gravity * delta
 
-	if Input.is_action_just_pressed("jump"):
+	if _input_active and Input.is_action_just_pressed("jump"):
 		if is_on_floor():
 			_do_jump(false)
 		elif _can_air_jump():

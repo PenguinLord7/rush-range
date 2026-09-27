@@ -15,6 +15,10 @@ created from scratch for this project.
 (Web export is single-threaded, so it runs on plain static hosting such as
 GitHub Pages with no special headers.)
 
+> **Web controls:** click the game once to lock the mouse ("CLICK TO LOOK
+> AROUND" is shown until you do), then use keyboard + mouse. Press `Esc` to
+> release the mouse.
+
 ## Requirements
 
 - **Godot 4.7** (stable) or newer 4.x
@@ -37,8 +41,8 @@ godot --path .            # runs res://scenes/main/main_menu.tscn
 | `W A S D` | Move |
 | `Space` | Jump (`Space` again in mid-air = double jump, only with Fist equipped) |
 | `Shift` | Sprint |
-| `Ctrl` | Crouch |
-| `Ctrl` while sprinting | Slide |
+| `C` | Crouch |
+| `C` while sprinting | Slide |
 | `Left Mouse` | Fire / Punch / Throw (hold to charge grenade) |
 | `Right Mouse` | Aim down sights |
 | `R` | Reload |
@@ -50,7 +54,7 @@ godot --path .            # runs res://scenes/main/main_menu.tscn
 ## Features
 
 - Fast movement: walk, sprint (FOV kick + weapon lowered), crouch, momentum
-  slide with cooldown, jump with air control.
+  slide with cooldown, jump with full air control.
 - Four weapons with a shared, data-driven base class:
   - **Assault Rifle** – automatic, 30/120, sustained recoil climb, ADS.
   - **Handgun** – semi-auto, 12/60, big single-shot recoil, ADS.

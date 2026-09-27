@@ -32,15 +32,15 @@ can_ads = true
 ads_fov = 58.0
 ads_speed = 15.0
 can_fire_while_sprinting = false
-mount_position = Vector3(0.1, -0.01, -0.34)
-ads_position = Vector3(0, -0.01, -0.3)
+mount_position = Vector3(0.26, -0.19, -0.44)
+ads_position = Vector3(0, -0.12, -0.36)
 bob_amount = Vector2(0.012, 0.009)
 
 [node name="Model" parent="." instance=ExtResource("2")]
-transform = Transform3D(1.5, 0, 0, 0, 1.5, 0, 0, 0, 1.5, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)
 
 [node name="RightHand" parent="." instance=ExtResource("4")]
-transform = Transform3D(1.6, 0, 0, 0, 1.6, 0, 0, 0, 1.6, 0, -0.06, 0.1)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0.06)
 
 [node name="Muzzle" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, -0.15)

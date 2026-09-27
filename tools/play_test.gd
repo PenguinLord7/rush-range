@@ -19,6 +19,7 @@ func _ready() -> void:
 
 	await _test_movement(player)
 	await _test_double_jump(player, manager)
+	await _test_ads_recoil(player, manager)
 	await _test_fist(player, manager)
 	await _test_grenade(manager)
 	_test_settings()
@@ -56,7 +57,13 @@ func _test_movement(player) -> void:
 	Input.action_release("jump")
 	await get_tree().physics_frame
 	_check(player.velocity.y > 1.0, "jump gives upward velocity (%.1f)" % player.velocity.y)
-	await _wait(0.6)
+	# Air control: moving while airborne should build horizontal speed.
+	Input.action_press("move_forward")
+	await _wait(0.25)
+	var air_speed := Vector2(player.velocity.x, player.velocity.z).length()
+	Input.action_release("move_forward")
+	_check(air_speed > 1.5, "can move in the air after jumping (%.1f m/s)" % air_speed)
+	await _wait(0.8)
 
 func _test_double_jump(player, manager) -> void:
 	# Without the Fist, a mid-air jump must be ignored.
@@ -97,6 +104,28 @@ func _ensure_grounded(player) -> void:
 		if player.is_on_floor():
 			return
 		await get_tree().physics_frame
+
+func _test_ads_recoil(player, manager) -> void:
+	manager.switch_to(0, true)
+	await _wait(0.1)
+	var cam: Camera3D = player.get_camera()
+	var weapon: WeaponBase = manager.current_weapon()
+
+	weapon.current_ammo = 30
+	weapon._ads_blend = 0.0
+	var before_hip: float = cam.recoil_amount()
+	weapon._shoot()
+	var hip: float = cam.recoil_amount() - before_hip
+
+	weapon.current_ammo = 30
+	weapon._ads_blend = 1.0
+	var before_ads: float = cam.recoil_amount()
+	weapon._shoot()
+	var ads: float = cam.recoil_amount() - before_ads
+
+	_check(hip > 0.0001, "hip fire kicks the camera (%.4f)" % hip)
+	_check(ads < hip * 0.2, "no camera kick while aiming (hip %.4f, ads %.4f)" % [hip, ads])
+	weapon._ads_blend = 0.0
 
 func _test_fist(player, manager) -> void:
 	manager.switch_to(2, true)

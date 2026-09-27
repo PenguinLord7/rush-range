@@ -219,11 +219,13 @@ func _shoot() -> void:
 
 	# Recoil + weapon kick (arcade: fully recoverable, player can fight it).
 	# Only firearms recoil; the fist and grenade do not push the camera.
+	# While aiming the camera stays still: recoil is shown by the weapon kick.
 	if kind == Kind.HITSCAN and (recoil_pitch_deg > 0.0 or recoil_yaw_deg > 0.0):
-		var mult := recoil_multiplier()
-		var pitch := deg_to_rad(recoil_pitch_deg) * mult * randf_range(0.85, 1.15)
-		var yaw := deg_to_rad(recoil_yaw_deg) * mult * randf_range(-1.0, 1.0)
-		manager.camera.add_recoil(pitch, yaw)
+		var mult := recoil_multiplier() * (1.0 - _ads_blend)
+		if mult > 0.0:
+			var pitch := deg_to_rad(recoil_pitch_deg) * mult * randf_range(0.85, 1.15)
+			var yaw := deg_to_rad(recoil_yaw_deg) * mult * randf_range(-1.0, 1.0)
+			manager.camera.add_recoil(pitch, yaw)
 		_kick = recoil_kick
 
 	if current_ammo == 0 and can_reload():
